@@ -1,0 +1,18 @@
+
+- name: Check for apache
+  hosts: all
+  tasks:
+   - name: "Check if NGINX is installed"
+     package_facts:
+      manager: "auto"
+     register: a
+   - name: Display out put
+     debug:
+      var: a
+
+   - name: Install tomcat9 if apache2 is not present
+     apt:
+      name: tomcat9
+      state: present
+     when: "'apache2' not in ansible_facts.packages"
+...

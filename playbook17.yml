@@ -1,0 +1,22 @@
+---
+- name: Error Handling or ExceptionHandling
+  hosts: all
+  tasks:
+   - block:
+      - name: Install tomcat7
+        apt:
+         name: tomcat7
+         state: present
+         update_cache: yes
+     rescue:
+      - name: Install tomcat9
+        apt:
+         name: tomcat9
+         state: present
+         update_cache: yes
+     always:
+      - name: Display output
+        debug:
+         msg: Tomcat setup successfull"
+
+

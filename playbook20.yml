@@ -1,0 +1,23 @@
+---
+- name: Check if apache2 is present if not install tomcat9
+  hosts: all
+  tasks:
+   - block:
+      - name: Check if apache is responding
+        uri:
+         url: "{{item}}"
+         status_code: 200
+        with_items:
+         - http://172.31.19.55
+         - http://172.31.22.146
+        register: a
+     rescue:
+      - name: Display output of above module
+        debug:
+         var: a
+      - name: Install tomcat
+        apt:
+         name: tomcat9
+         state: present
+        when: a.results.status != 200
+
